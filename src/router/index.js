@@ -17,16 +17,23 @@ const router = createRouter({
       props: route => ({page: parseInt(route.query.page) || 1})
     },
     {
-      path: '/about',
+      path: '/about-us',
       name: 'About',
-      component: About
+      component: About,
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       // component: () => import('../views/AboutView.vue'), this type of routing is for performance optimization when the app is big
+      // alias: '/about' an alias is a different path that leads to the same component work same way as redirect
     },
     {
-      path: '/event/:id',
+      // redirecting old routue to new route
+      // redirect is better for SEO
+      path: '/about',
+      redirect: { name: 'About' }
+    },
+    {
+      path: '/events/:id',
       name: 'EventLayout',
       props: true,
       component: EventLayout,
@@ -48,6 +55,15 @@ const router = createRouter({
         }
       ]
     },
+    {
+      path: '/event/:afterEvent(.*)', // for redirecting when having a nested route
+      redirect: to => {
+        return { path: '/events/' + to.params.afterEvent }
+      } // this is when having a nested route
+      // redirect: () => {
+      //   return { name: 'EventDetails' },  id will be directed automatically to EventDetails
+      // }
+    }
   ],
 })
 
