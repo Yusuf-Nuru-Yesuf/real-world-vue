@@ -1,23 +1,28 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted,  computed, defineProps } from 'vue'
 import EventService from '@/services/EventService.js'
+import { useRouter } from "vue-router";
 
-const props = defineProps({
-  id: {
-    required: true,
-  },
-})
-
+const router = useRouter();
+const props = defineProps(['id']);
+const id = computed(() => props.id);
 const event = ref(null)
 
 onMounted (() => {
-  EventService.getEvent(props.id)
+  EventService.getEvent(id.value)
   .then((response)=> {
     event.value = response.data
   })
-  .catch((error) => {
-    console.log(error)
+  .catch(error => {
+    if (error.response && error.response.status === 404) {
+      router.push({
+        name: '404Resource',
+        params: { resource: 'event' }
+      })
+    } else {
+      router.push({ name: 'NetworkError' })
+    }
   })
 })
 
