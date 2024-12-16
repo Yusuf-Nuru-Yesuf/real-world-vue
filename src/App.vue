@@ -1,5 +1,14 @@
+<script setup>
+import { inject } from 'vue';
+
+const GStore = inject('GStore');
+</script>
+
 <template>
   <div id="app">
+    <div id="flashMessage" v-if="GStore.flashMessage">
+      {{ GStore.flashMessage }}
+    </div>
       <div id="nav">
           <router-link :to="{ name: 'EventList' }">Events</router-link> |
           <router-link :to="{ name: 'About' }">About</router-link>
@@ -34,4 +43,17 @@ h4 {
   font-size: 20px;
 } 
 
+@keyframes yellowfade {
+  from {
+    background: yellow;
+  }
+  to {
+    background: transparent;
+  }
+}
+
+#flashMessage {
+  animation-name: yellowfade;
+  animation-duration: 3s;
+}
 </style>
