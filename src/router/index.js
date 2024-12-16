@@ -5,6 +5,8 @@ import EventRegister from '@/views/event/Register.vue'
 import EventEdit from '@/views/event/Edit.vue'
 import About from '@/views/About.vue'
 import EventLayout from '@/views/event/Layout.vue'
+import NotFound from '@/views/NotFound.vue'
+import NetworkError from '@/views/NetworkError.vue'
 
 
 const router = createRouter({
@@ -63,6 +65,22 @@ const router = createRouter({
       // redirect: () => {
       //   return { name: 'EventDetails' },  id will be directed automatically to EventDetails
       // }
+    },
+    {
+      path: '/:catchAll(.*)', // for 404 page
+      name: 'NotFound',
+      component: NotFound
+    },
+    {
+      path: '/404/:resource',
+      name: '404Resource',
+      component: NotFound,
+      props: true
+    },
+    {
+      path: '/network-error',
+      name: 'NetworkError',
+      component: NetworkError
     }
   ],
 })
